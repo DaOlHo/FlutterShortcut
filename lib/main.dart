@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ping/flutter_ping.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
 
 void main() => runApp(MyApp());
 
@@ -30,7 +31,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void ping() async {
     try {
       await FlutterPing.pingURL(url: "8.8.8.8");
-      await launch('https://yahoo.com', forceWebView: true);
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        await launch('https://yahoo.com', forceWebView: true);
+      }
     } catch (e) {
       showDialog(
           context: context,
